@@ -79,7 +79,7 @@ export default {
                         const wowConfig = await getWarpConfigs(env, client);
                         return new Response(`${JSON.stringify(wowConfig, null, 4)}`, { status: 200 });
 
-                    case '/panel':
+                    case '/jhbook':
 
                         if (typeof env.bpb !== 'object') {
                             const errorPage = renderErrorPage('KV Dataset is not properly set!', null, true);
@@ -125,7 +125,7 @@ export default {
                         }
 
                         const loginAuth = await Authenticate(request, env);
-                        if (loginAuth) return Response.redirect(`${url.origin}/panel`, 302);
+                        if (loginAuth) return Response.redirect(`${url.origin}/jhbook`, 302);
 
                         let secretKey = await env.bpb.get('secretKey');
                         const pwd = await env.bpb.get('pwd');
@@ -181,7 +181,7 @@ export default {
                             }
                         });        
 
-                    case '/panel/password':
+                    case '/jhbook/password':
 
                         let passAuth = await Authenticate(request, env);
                         if (!passAuth) return new Response('Unauthorized!', { status: 401 });           
@@ -199,7 +199,7 @@ export default {
                         });
 
                     default:
-                        // return new Response('Not found', { status: 404 });
+                         return new Response('Not found', { status: 404 });
                         url.hostname = 'www.speedtest.net';
                         url.protocol = 'https:';
                         request = new Request(url, request);
@@ -2552,7 +2552,7 @@ const renderHomePage = async (env, hostName, fragConfigs) => {
                 const applyButtonVal = applyButton.value;
                 applyButton.value = '⌛ Loading...';
 
-                const response = await fetch('/panel', {
+                const response = await fetch('/jhbook', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
@@ -2754,7 +2754,7 @@ const renderLoginPage = async () => {
                 });
             
                 if (response.ok) {
-                    window.location.href = '/panel';
+                    window.location.href = '/jhbook';
                 } else {
                     passwordError.textContent = '⚠️ Wrong Password!';
                     const errorMessage = await response.text();
